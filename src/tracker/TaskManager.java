@@ -125,7 +125,12 @@ public class TaskManager {
     }*/
 
     public void epicReplace(int id,Epic epic) { //e) Обновление эпика
+        for (Integer subtaskId : epics.get(id).getSubtaskIds()) {
+            subtasks.remove(subtaskId);
+        }
         epics.put(id,epic);
+
+        updateEpicStatus(epic);
     }
 
     public Task showTask(int id) { //c) Получение задачи по идентификатору
@@ -172,10 +177,12 @@ public class TaskManager {
         epic.getSubTasks().put(id, subTask);
         subtasks.put(id,subTask);
         subTask.setEpic(epic);
+        updateEpicStatus(epic);
         return id;
     }
     public void subTaskReplace(int id,Epic epic,SubTask subTask) {//e) Обновление подзадачи
         epic.getSubTasks().put(id,subTask);
+        updateEpicStatus(epic);
     }
 
   /*  public void Clear() { //b) Удаление всех задач и эпиков с подзадачами
@@ -197,6 +204,8 @@ public class TaskManager {
         epics.clear();
         subtasks.clear();
     }
+
+
 
 
 }

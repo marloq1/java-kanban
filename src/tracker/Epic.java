@@ -24,21 +24,22 @@ public class Epic extends Task{
         return TaskType.EPIC;
     }
 
-    public List<Integer> getSubtaskIds() {
+    List<Integer> getSubtaskIds() {
         return new ArrayList<>(subTasks.keySet());
     }
 
-    public void removeSubtask(int id) {
+    void removeSubtask(int id) {
         subTasks.remove(id);
     }
 
-    public void cleanSubtaskIds() {
+    void cleanSubtaskIds() {
         subTasks.clear();
     }
 
+
     @Override
     public String toString() {
-        return "tracker.Epic{" +
+        return "Epic{" +
                 "status=" + getStatus() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription()  +

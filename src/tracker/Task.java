@@ -12,7 +12,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.status=status;
-        id=this.hashCode();
+
     }
     public Task(String name, String description) {
         this.name = name;
@@ -31,10 +31,11 @@ public class Task {
     }
 
     public Status getStatus() {
-        return status;
+            return status;
+
     }
 
-    public void setStatus(Status status) {
+    void setStatus(Status status) {
         this.status = status;
     }
 
@@ -53,7 +54,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "tracker.Task{" +
+        return "Task{" +
                 "status=" + status +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\''+"}";
@@ -67,10 +68,10 @@ public class Task {
         return TaskType.TASK;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
-    public Epic getEpic() {
-        return null;
-    }
+   Epic getEpic() {
+       return null;
+   }
 }

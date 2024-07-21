@@ -12,14 +12,14 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "tracker.SubTask{" +
+        return "SubTask{" +
                 "status=" + getStatus() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription()+"}"
                 ;
     }
 
-    public void setEpic(Epic epic) {
+    void setEpic(Epic epic) {
         this.epic = epic;
     }
 
