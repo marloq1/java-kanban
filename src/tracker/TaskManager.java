@@ -33,48 +33,13 @@ public class TaskManager {
            return subtasks.get(id);
         }
         return null;
-        /*for (Epic e: epics.values()) {
-            if (e.getSubTasks().containsKey(id)) {
-                epic =e;
-                taskType=TaskType.SUBTASK;
-            }
-        }*/
-        //return new Result(taskType,epic);
+
     }
     public void taskReplace(int id,Task task) { //e) Обновление задачи
         tasks.put(id,task);
     }
 
-    /*public void taskDelete(String id) { // f) Удаление по идентификатору задач, эпиков и подзадач
-        if (tasks.remove(id)!=null) {
-            System.out.println("Объект успешно удален");
-            return;
-        }
-        if (epics.remove(id)!=null) {
-            System.out.println("Объект успешно удален");
-            return;
-        }
-        for (Epic e: epics.values()) {
-            if (e.getSubTasks().remove(id)!=null) {
 
-                if (e.getSubTasks().isEmpty()) {
-                    for (int key: epics.keySet()) {
-                        if (epics.get(key).equals(e)) {
-                            e.setStatus(Status.NEW);
-                            System.out.println("Объект успешно удален");
-                            return;
-                        }
-                    }
-                }
-                checkEpicStatus(e);
-                System.out.println("Объект успешно удален");
-            }
-            return;
-
-        }
-
-        System.out.println("Такого объекта нет");
-    }*/
     public void deleteTask(int id) {
         tasks.remove(id);
     }
@@ -94,9 +59,7 @@ public class TaskManager {
         updateEpicStatus(epic);
     }
 
-   /* public Map<Integer, Task> getTasks() {  //a) Получение списка Задач
-        return tasks;
-    }*/
+
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
@@ -120,9 +83,7 @@ public class TaskManager {
         return id;
     }
 
-  /*  public Map<Integer, Epic> getEpics() { //a) Получение списка эпиков с входящими подзадачами
-        return epics;
-    }*/
+
 
     public void epicReplace(int id,Epic epic) { //e) Обновление эпика
         for (Integer subtaskId : epics.get(id).getSubtaskIds()) {
@@ -185,10 +146,7 @@ public class TaskManager {
         updateEpicStatus(epic);
     }
 
-  /*  public void Clear() { //b) Удаление всех задач и эпиков с подзадачами
-        tasks.clear();
-        epics.clear();
-    }*/
+
 
     public void deleteTasks() {
         tasks.clear();

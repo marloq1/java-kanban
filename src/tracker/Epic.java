@@ -14,11 +14,6 @@ public class Epic extends Task{
         return subTasks;
     }
 
-    /*@Override
-    public int hashCode() {
-        return Math.abs(Objects.hash(getName(), getDescription())*17);
-    }*/
-
     @Override
     public TaskType getType() {
         return TaskType.EPIC;

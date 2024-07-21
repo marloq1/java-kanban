@@ -28,7 +28,7 @@ public class SubTask extends Task {
         return TaskType.SUBTASK;
     }
 
-    @Override
+
     public Epic getEpic() {
         return epic;
     }
@@ -36,8 +36,5 @@ public class SubTask extends Task {
     public int getEpicId() {
         return epic.getId();
     }
-    /*  @Override
-    public int hashCode() {
-        return Math.abs(Objects.hash(getName(), getDescription())*29);
-    }*/
+
 }

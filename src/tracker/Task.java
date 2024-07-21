@@ -47,10 +47,7 @@ public class Task {
         return description;
     }
 
-   /* @Override
-    public int hashCode() {
-        return Math.abs(Objects.hash(name, description)*31);
-    }*/
+
 
     @Override
     public String toString() {
@@ -68,10 +65,7 @@ public class Task {
         return TaskType.TASK;
     }
 
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
-   Epic getEpic() {
-       return null;
-   }
 }
