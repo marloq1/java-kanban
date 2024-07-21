@@ -1,3 +1,4 @@
+import tracker.*;
 import java.util.Scanner;
 
 public class Main {
@@ -27,16 +28,17 @@ public class Main {
                     System.out.println("3 - Подзадача");
                     String taskType = scanner.nextLine();
                     if (taskType.equals("1")) {
-                        taskPutter("None");
+                        taskPutter(0);
                        // System.out.println(taskManager.getTasks());
                     } else if (taskType.equals("2")) {
-                        epicPutter("None");
+                        epicPutter(0);
                         //System.out.println(taskManager.getEpics());
 
                     } else if (taskType.equals("3")) {
                         System.out.println("Введите идентификационный номер задачи к которой нужно добавить подзадачу");
-                        String idToAdd=scanner.nextLine();
-                        if (taskManager.scanId(idToAdd).getCount()==2) {
+                        int idToAdd=scanner.nextInt();
+                        scanner.nextLine();
+                        if (taskManager.scanId(idToAdd).getType()==TaskType.SUBTASK) {
                             System.out.println("Введите название подзадачи");
                             String taskName = scanner.nextLine();
                             System.out.println("Введите краткое описание подзадачи");
@@ -49,7 +51,7 @@ public class Main {
                                 System.out.println("Вы ввели недопустимый вариант, поэтому выбран статус по умолчанию (NEW)");
                             }
                             taskManager.subTaskPut(taskManager.getEpics().get(idToAdd), new SubTask(taskName,taskDescription,taskStatus));
-                            taskManager.checkEpicStatus(taskManager.getEpics().get(idToAdd));
+                            taskManager.updateEpicStatus(taskManager.getEpics().get(idToAdd));
                         } else {
                             System.out.println("Такого индикатора нет");
                         }
@@ -58,19 +60,16 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("Простые задачи:");
-                    for (String s:taskManager.getTasks().keySet() ){
-                        System.out.println(s);
-                        System.out.println(taskManager.getTasks().get(s));
-                    }
+
+                        System.out.println(taskManager.getTasks());
+
                     if (taskManager.getTasks().isEmpty()) {
                         System.out.println("Список пуст");
                     }
                     System.out.println();
                     System.out.println("Составные задачи:");
-                    for (String s:taskManager.getEpics().keySet() ){
-                        System.out.println(s);
-                        System.out.println(taskManager.getEpics().get(s));
-                    }
+
+                        System.out.println(taskManager.getEpics());
                     if (taskManager.getEpics().isEmpty()) {
                         System.out.println("Список пуст");
                     }
@@ -78,25 +77,30 @@ public class Main {
                     break;
                 case "3":
                     System.out.println("Введите номер идентификатора задачи для ее удаления");
-                    String idToDelete = scanner.nextLine();
-                    taskManager.taskDelete(idToDelete);
+                    int idToDelete = scanner.nextInt();
+                    scanner.nextLine();
+                    taskManager.deleteTask(idToDelete);
+                    //taskManager.deleteEpic(idToDelete);
+                    taskManager.deleteSubtask(idToDelete);
                     break;
                 case "4":
-                    taskManager.Clear();
+                    //taskManager.Clear();
                     System.out.println("Списки очищены");
                     break;
                 case "5":
                     System.out.println("Введите номер идентификатора задачи для замены");
-                    String idToReplace = scanner.nextLine();
-                    switch (taskManager.scanId(idToReplace).getCount()) {
-                        case 1:
-                            System.out.println("Вы можете заменить простую задачу");
-                            taskPutter(idToReplace);
-                            break;
-                        case 2:
-                            System.out.println("Вы можете заменить составную задачу");
-                            epicPutter(idToReplace);
-                            break;
+                    int idToReplace = scanner.nextInt();
+                    scanner.nextLine();
+                    try {
+                        switch (taskManager.scanId(idToReplace).getType()) {
+                            case TASK:
+                                System.out.println("Вы можете заменить простую задачу");
+                                taskPutter(idToReplace);
+                                break;
+                            case EPIC:
+                                System.out.println("Вы можете заменить составную задачу");
+                                epicPutter(idToReplace);
+                                break;
                      /*   case 3:
                             System.out.println("Вы можете заменить и простую и составную задачу");
                             System.out.println("Выберите задачу для замены");
@@ -111,33 +115,34 @@ public class Main {
                                 System.out.println("Такого варианта нет");
                             }
                             break;*/
-                        case 3:
-                            Epic newEpic = taskManager.scanId(idToReplace).getEpic();
-                            System.out.println("Вы можете заменить подзадачу");
-                            System.out.println("Введите название подзадачи");
-                            String taskName = scanner.nextLine();
-                            System.out.println("Введите краткое описание подзадачи");
-                            String taskDescription = scanner.nextLine();
-                            Status status=Status.NEW;
-                            try {
-                                System.out.println("Введите cтатус задачи (NEW, IN_PROGRESS,DONE)");
-                                status = Status.valueOf(scanner.nextLine());
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Вы ввели недопустимый вариант, поэтому выбран статус по умолчанию (NEW)");
-                            }
-                            taskManager.subTaskReplace(idToReplace,newEpic,new SubTask(taskName,taskDescription,status));
-                            taskManager.checkEpicStatus(newEpic);
+                            case SUBTASK:
+                                Epic newEpic = taskManager.scanId(idToReplace).getEpic();
+                                System.out.println("Вы можете заменить подзадачу");
+                                System.out.println("Введите название подзадачи");
+                                String taskName = scanner.nextLine();
+                                System.out.println("Введите краткое описание подзадачи");
+                                String taskDescription = scanner.nextLine();
+                                Status status = Status.NEW;
+                                try {
+                                    System.out.println("Введите cтатус задачи (NEW, IN_PROGRESS,DONE)");
+                                    status = Status.valueOf(scanner.nextLine());
+                                } catch (IllegalArgumentException e) {
+                                    System.out.println("Вы ввели недопустимый вариант, поэтому выбран статус по умолчанию (NEW)");
+                                }
+                                taskManager.subTaskReplace(idToReplace, newEpic, new SubTask(taskName, taskDescription, status));
+                                taskManager.updateEpicStatus(newEpic);
 
-                            break;
+                                break;
 
-                        default:
-                            System.out.println("Такого id нет");
-
+                        }
+                    } catch (NullPointerException e) {
+                        System.out.println("Такого id нет");
                     }
                     break;
                 case "6":
                     System.out.println("Введите номер идентификатора задачи для просмотра");
-                    String idToShow = scanner.nextLine();
+                    int idToShow = scanner.nextInt();
+                    scanner.nextLine();
                     if (taskManager.showTask(idToShow)!=null) {
                         System.out.println(taskManager.showTask(idToShow));
                     } else if (taskManager.showEpic(idToShow)!=null) {
@@ -148,7 +153,8 @@ public class Main {
                     break;
                 case "7":
                     System.out.println("Введите номер идентификатора задачи для просмотра списка подзадач");
-                    String id = scanner.nextLine();
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
                     if (taskManager.showSubTasks(id)!=null) {
                         System.out.println(taskManager.showSubTasks(id));
                     } else {
@@ -167,19 +173,19 @@ public class Main {
 
     }
 
-    public static void taskPutter(String id) {
+    public static void taskPutter(int id) {
         System.out.println("Введите название задачи");
         String taskName = scanner.nextLine();
         System.out.println("Введите краткое описание задачи");
         String taskDescription = scanner.nextLine();
-        Status status=Status.NEW;
+        Status status= Status.NEW;
         try {
             System.out.println("Введите cтатус задачи (NEW, IN_PROGRESS,DONE)");
             status = Status.valueOf(scanner.nextLine());
         } catch (IllegalArgumentException e) {
             System.out.println("Вы ввели недопустимый вариант, поэтому выбран статус по умолчанию (NEW)");
         }
-        if (id.equals("None")) {
+        if (id==0) {
             taskManager.taskPut(new Task(taskName, taskDescription,status));
         } else {
             taskManager.taskReplace(id,new Task(taskName, taskDescription,status));
@@ -188,20 +194,20 @@ public class Main {
 
 
 
-    public static void epicPutter(String id) {
+    public static void epicPutter(int id) {
         System.out.println("Введите название составной задачи");
         String epicName = scanner.nextLine();
         System.out.println("Введите краткое описание составной задачи");
         String epicDescription = scanner.nextLine();
-        Status epicStatus=Status.NEW;
+        /*tracker.Status epicStatus=tracker.Status.NEW;
         try {
             System.out.println("Введите cтатус задачи (NEW, IN_PROGRESS,DONE)");
-            epicStatus = Status.valueOf(scanner.nextLine());
+            epicStatus = tracker.Status.valueOf(scanner.nextLine());
         } catch (IllegalArgumentException e) {
             System.out.println("Вы ввели недопустимый вариант, поэтому выбран статус по умолчанию (NEW)");
-        }
-        Epic newEpic = new Epic(epicName,epicDescription,epicStatus);
-        if (id.equals("None")) {
+        }*/
+        Epic newEpic = new Epic(epicName,epicDescription);
+        if (id==0) {
             taskManager.epicsPut(newEpic);
         } else {
             taskManager.epicReplace(id,newEpic);
@@ -235,7 +241,7 @@ public class Main {
 
         }
         if (amountOfSubtasks>0) {
-            taskManager.checkEpicStatus(newEpic);
+            taskManager.updateEpicStatus(newEpic);
         } else {
             newEpic.setStatus(Status.NEW);
         }

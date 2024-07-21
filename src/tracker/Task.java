@@ -1,14 +1,22 @@
+package tracker;
+
 import java.util.Objects;
 
 public class Task {
     private Status status;
     private String name;
     private String description;
+    private int id;
 
     public Task(String name, String description,Status status) {
         this.name = name;
         this.description = description;
         this.status=status;
+        id=this.hashCode();
+    }
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
 
@@ -38,21 +46,31 @@ public class Task {
         return description;
     }
 
-    @Override
+   /* @Override
     public int hashCode() {
-        return Objects.hash(name, description);
-    }
+        return Math.abs(Objects.hash(name, description)*31);
+    }*/
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "tracker.Task{" +
                 "status=" + status +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\''+"}";
     }
 
-    public String getId() {
-        return "id"+Math.abs((this.hashCode()*31));
+    public int getId() {
+        return id;
 
+    }
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    public Epic getEpic() {
+        return null;
     }
 }
