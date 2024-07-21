@@ -7,13 +7,13 @@ public class TaskManager {
 
 
 
-    public void taskPut(Task task) {
+    public void taskPut(Task task) { //d) Добавление новой задачи
 
             tasks.put(task.getId(), task);
 
     }
 
-    public Result scanId(String id) {
+    public Result scanId(String id) {// Вспомогательный метод для определения типа задачи по id
         int count=0;
         Epic epic=new Epic("None","None",Status.NEW);
         if (tasks.containsKey(id)) {
@@ -30,11 +30,11 @@ public class TaskManager {
         }
         return new Result(count,epic);
     }
-    public void taskReplace(String id,Task task) {
+    public void taskReplace(String id,Task task) { //e) Обновление задачи
         tasks.put(id,task);
     }
 
-    public void taskDelete(String id) {
+    public void taskDelete(String id) { // f) Удаление по идентификатору задач, эпиков и подзадач
         if (tasks.remove(id)!=null) {
             System.out.println("Объект успешно удален");
             return;
@@ -65,33 +65,33 @@ public class TaskManager {
         System.out.println("Такого объекта нет");
     }
 
-    public Map<String, Task> getTasks() {
+    public Map<String, Task> getTasks() {  //a) Получение списка Задач
         return tasks;
     }
 
 
 
-    public void epicsPut(Epic epic) {
+    public void epicsPut(Epic epic) { //d) Добавление нового эпика
         epics.put(epic.getId(),epic);
     }
 
-    public Map<String, Epic> getEpics() {
+    public Map<String, Epic> getEpics() { //a) Получение списка эпиков с входящими подзадачами
         return epics;
     }
 
-    public void epicReplace(String id,Epic epic) {
+    public void epicReplace(String id,Epic epic) { //e) Обновление эпика
         epics.put(id,epic);
     }
 
-    public Task showTask(String id) {
+    public Task showTask(String id) { //c) Получение задачи по идентификатору
 
         return tasks.getOrDefault(id, null);
     }
-    public Epic showEpic(String id) {
+    public Epic showEpic(String id) {// c) Получение эпика с подзадачами по идентификатору
 
         return epics.getOrDefault(id, null);
     }
-    public Map<String,SubTask> showSubTasks (String id) {
+    public Map<String,SubTask> showSubTasks (String id) {// 3.a) Получение списка всех подзадач определенного эпика
         if (epics.containsKey(id)) {
             return epics.get(id).getSubTasks();
         } else {
@@ -99,7 +99,7 @@ public class TaskManager {
         }
     }
 
-    public void checkEpicStatus(Epic epic) {
+    public void checkEpicStatus(Epic epic) { //4.a) Управление статусами
         int marker1 = 0,marker2=0,marker3=0;
         for (String key: epic.getSubTasks().keySet()) {
             if ((epic.getSubTasks().get(key).getStatus()==Status.NEW) && (marker1==0)){
@@ -121,14 +121,14 @@ public class TaskManager {
         }
     }
 
-    public void  subTaskPut(Epic epic, SubTask subTask) {
+    public void  subTaskPut(Epic epic, SubTask subTask) { //d) Добавление новой подзадачи в эпик
         epic.getSubTasks().put(subTask.getId(),subTask);
     }
-    public void subTaskReplace(String id,Epic epic,SubTask subTask) {
+    public void subTaskReplace(String id,Epic epic,SubTask subTask) {//e) Обновление подзадачи
         epic.getSubTasks().put(id,subTask);
     }
 
-    public void Clear() {
+    public void Clear() { //b) Удаление всех задач и эпиков с подзадачами
         tasks.clear();
         epics.clear();
     }

@@ -16,7 +16,7 @@ public class SubTask extends Task {
     }
     @Override
     public String getId() {
-        return "id"+(this.hashCode()*29);
+        return "id"+Math.abs(this.hashCode()*29);
 
     }
 }

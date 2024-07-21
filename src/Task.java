@@ -40,7 +40,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Math.abs(Objects.hash(name, description));
+        return Objects.hash(name, description);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Task {
     }
 
     public String getId() {
-        return "id"+(this.hashCode()*31);
+        return "id"+Math.abs((this.hashCode()*31));
 
     }
 }

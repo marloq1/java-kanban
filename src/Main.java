@@ -155,8 +155,11 @@ public class Main {
                         System.out.println("Такого номера нет");
                     }
                     break;
-                default:
+                case "8":
+                    System.out.println("Всего хорошего");
                     return;
+                default:
+                    System.out.println("Такой команды нет");
 
             }
         }
@@ -248,6 +251,7 @@ public class Main {
         System.out.println("5 - Обновить задачу по идентификатору");
         System.out.println("6 - Получение по идентификатору");
         System.out.println("7 - Просмотр всех подзадач составной задачи");
+        System.out.println("8 - Выход");
 
 
     }
