@@ -1,6 +1,4 @@
-package tracker;
-
-import java.util.Objects;
+package tracker.model;
 
 public class SubTask extends Task {
 
@@ -19,7 +17,7 @@ public class SubTask extends Task {
                 ;
     }
 
-    void setEpic(Epic epic) {
+    public void setEpic(Epic epic) {
         this.epic = epic;
     }
 

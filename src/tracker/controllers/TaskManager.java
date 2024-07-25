@@ -1,4 +1,9 @@
-package tracker;
+package tracker.controllers;
+
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.SubTask;
+import tracker.model.Task;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -113,7 +118,7 @@ public class TaskManager {
     public void updateEpicStatus(Epic epic) { //4.a) Управление статусами
         int marker1 = 0,marker2=0,marker3=0;
         for (int key: epic.getSubTasks().keySet()) {
-            if ((epic.getSubTasks().get(key).getStatus()==Status.NEW) && (marker1==0)){
+            if ((epic.getSubTasks().get(key).getStatus()== Status.NEW) && (marker1==0)){
                 marker1=1;
             }
             if ((epic.getSubTasks().get(key).getStatus()==Status.DONE) && (marker2==0)){

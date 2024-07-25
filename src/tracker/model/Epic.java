@@ -1,4 +1,4 @@
-package tracker;
+package tracker.model;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class Epic extends Task{
         super(name, description);
     }
 
-    Map<Integer, SubTask> getSubTasks() {
+    public Map<Integer, SubTask> getSubTasks() {
         return subTasks;
     }
 
@@ -19,15 +19,15 @@ public class Epic extends Task{
         return TaskType.EPIC;
     }
 
-    List<Integer> getSubtaskIds() {
+    public List<Integer> getSubtaskIds() {
         return new ArrayList<>(subTasks.keySet());
     }
 
-    void removeSubtask(int id) {
+    public void removeSubtask(int id) {
         subTasks.remove(id);
     }
 
-    void cleanSubtaskIds() {
+    public void cleanSubtaskIds() {
         subTasks.clear();
     }
 

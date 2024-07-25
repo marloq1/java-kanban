@@ -1,4 +1,4 @@
-package tracker;
+package tracker.model;
 
 import java.util.Objects;
 
@@ -35,7 +35,7 @@ public class Task {
 
     }
 
-    void setStatus(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
