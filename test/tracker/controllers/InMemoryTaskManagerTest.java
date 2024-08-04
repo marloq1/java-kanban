@@ -6,6 +6,7 @@ import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
+import tracker.model.TaskType;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = new Managers().getDefault();
+        taskManager = Managers.getDefault();
         task1 = new Task("Задача 1", "Действие таска 1", Status.NEW);
         task2 = new Task("Задача 2", "Действие таска 2", Status.NEW);
         epic1 = new Epic("Эпик 1", "Действие эпика 1");
@@ -56,17 +57,6 @@ class InMemoryTaskManagerTest {
         assertEquals(subTask12,taskManager.getSubTask(idSt2));
         assertEquals(epic2,taskManager.getEpic(idE2));
         assertEquals(subTask21,taskManager.getSubTask(idSt3));
-
-    }
-
-    @Test
-    public void IdConflict() {
-        task1.setId(100);
-        taskManager.taskPut(task1);
-        int idT2 = taskManager.taskPut(task2);
-        assertEquals(task1,taskManager.getTask(100));
-        assertEquals(task2,taskManager.getTask(idT2));
-
 
     }
 
@@ -173,10 +163,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void scanIdCheck() {
-        assertInstanceOf(Task.class, taskManager.scanId(idT1));
-        assertInstanceOf(Epic.class, taskManager.scanId(idE1));
-        assertInstanceOf(SubTask.class, taskManager.scanId(idSt1));
-        assertNull(taskManager.scanId(100));
+        assertEquals(task1.getType(), TaskType.TASK);
+        assertEquals(epic1.getType(), TaskType.EPIC);
+        assertEquals(subTask11.getType(), TaskType.SUBTASK);
     }
 
     @Test

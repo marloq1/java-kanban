@@ -4,6 +4,8 @@ import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.model.Epic;
+import tracker.model.TaskType;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,66 +25,34 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int taskPut(Task task) { //d) Добавление новой задачи
-        if (task.getId()<=0) {
-            final int id = ++generatorId;
-            task.setId(id);
-            tasks.put(id, task);
-        } else {
-            task.setId(task.getId());
-            tasks.put(task.getId(), task);
-        }
-        return task.getId();
+        final int id = ++generatorId;
+        task.setId(id);
+        tasks.put(id, task);
+        return id;
 
     }
 
     @Override
     public int epicsPut(Epic epic) { //d) Добавление нового эпика
-        if (epic.getId()<=0) {
-            final int id = ++generatorId;
-            epic.setId(id);
-            epics.put(id, epic);
-        } else {
-            epic.setId(epic.getId());
-            epics.put(epic.getId(), epic);
-        }
+        final int id = ++generatorId;
+        epic.setId(id);
+        epics.put(id, epic);
         updateEpicStatus(epic);
-        return epic.getId();
+        return id;
     }
 
     @Override
     public int subTaskPut(Epic epic, SubTask subTask) { //d) Добавление новой подзадачи в эпик
-        if (subTask.getId()<=0) {
-            final int id = ++generatorId;
-            subTask.setId(id);
-            epic.getSubTasksMap().put(id, subTask);
-            subtasks.put(id, subTask);
-        } else {
-            subTask.setId(subTask.getId());
-            epic.getSubTasksMap().put(subTask.getId(), subTask);
-            subtasks.put(subTask.getId(), subTask);
-        }
-            subTask.setEpic(epic);
+        final int id = ++generatorId;
+        subTask.setId(id);
+        epic.getSubTasksMap().put(id, subTask);
+        subtasks.put(id, subTask);
+        subTask.setEpic(epic);
         updateEpicStatus(epic);
-        return subTask.getId();
+        return id;
     }
 
 
-    @Override
-    public <T extends Task>T scanId(int id) {// Вспомогательный метод для определения типа задачи по id
-
-
-        if (tasks.containsKey(id)) {
-            return (T) tasks.get(id);
-        }
-        if (epics.containsKey(id)) {
-            return (T)epics.get(id);
-        }
-        if (subtasks.containsKey(id)){
-           return (T)subtasks.get(id);
-        }
-        return null;
-
-    }
     @Override
     public void taskReplace(int id, Task task) { //e) Обновление задачи
         if (tasks.containsKey(id)) {
@@ -250,4 +220,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-}
+
+
+    }

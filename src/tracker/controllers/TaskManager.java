@@ -48,5 +48,4 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 
-    <T extends Task>T scanId(int id);
 }

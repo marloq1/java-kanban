@@ -10,9 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //HistoryManager historyManager = Managers.getDefaultHistory();
-
-        taskManager = new InMemoryTaskManager();
+        taskManager = Managers.getDefault();
         Task task1 = new Task("Задача 1", "Действие", Status.NEW);
         Task task2 = new Task("Задача 2", "Действие", Status.NEW);
         Epic epic1 = new Epic("Эпик 1", "Действие");
