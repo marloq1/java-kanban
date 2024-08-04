@@ -10,7 +10,11 @@ public class Epic extends Task{
         super(name, description);
     }
 
-    public Map<Integer, SubTask> getSubTasks() {
+    public List <SubTask> getSubTasks() {
+        return new ArrayList<>(subTasks.values());
+    }
+
+    public Map <Integer,SubTask> getSubTasksMap() {
         return subTasks;
     }
 
