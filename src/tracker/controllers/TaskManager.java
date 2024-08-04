@@ -1,12 +1,11 @@
 package tracker.controllers;
 
-import tracker.model.Epic;
 import tracker.model.SubTask;
 import tracker.model.Task;
+import tracker.model.Epic;
 
 
 import java.util.List;
-import java.util.Map;
 
 public interface TaskManager {
     int taskPut(Task task);
@@ -47,5 +46,7 @@ public interface TaskManager {
 
     List <SubTask> getSubTasksOfEpic (int id);
 
-    public HistoryManager getHistoryManager();
+    HistoryManager getHistoryManager();
+
+    <T extends Task>T scanId(int id);
 }

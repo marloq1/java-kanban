@@ -1,8 +1,8 @@
 import tracker.controllers.*;
-import tracker.model.Epic;
 import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
+import tracker.model.Epic;
 
 public class Main {
     public static TaskManager taskManager;

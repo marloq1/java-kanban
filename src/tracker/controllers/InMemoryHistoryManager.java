@@ -9,6 +9,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private final List<Task> history = new ArrayList<>();
 
+
     @Override
     public List<Task> getHistory() {
 
