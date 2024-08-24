@@ -25,21 +25,21 @@ public class Main {
         int idSt2 = taskManager.subTaskPut(epic1, subTask12);
         int idSt3 = taskManager.subTaskPut(epic1, subTask13);
         int idE2 = taskManager.epicsPut(epic2);
-        taskManager.getTask(idT1);//1
-        taskManager.getTask(idT2);//2
-        taskManager.getEpic(idE1);//3
-        taskManager.getEpic(idE2);//4
+        taskManager.getTask(idT1); //1
+        taskManager.getTask(idT2); //2
+        taskManager.getEpic(idE1); //3
+        taskManager.getEpic(idE2); //4
         System.out.println();
         printHistory(taskManager);
-        taskManager.getSubTask(idSt1);//5
-        taskManager.getTask(idT2);//6
-        taskManager.getSubTask(idSt2);//7
-        taskManager.getTask(idT1);//8
+        taskManager.getSubTask(idSt1); //5
+        taskManager.getTask(idT2); //6
+        taskManager.getSubTask(idSt2); //7
+        taskManager.getTask(idT1); //8
         System.out.println();
         printHistory(taskManager);
-        taskManager.getTask(idT2);//9
+        taskManager.getTask(idT2); //9
         taskManager.getSubTask(idSt3);
-        taskManager.getEpic(idE1);//10
+        taskManager.getEpic(idE1); //10
         taskManager.getSubTask(idSt1);
         System.out.println();
         printHistory(taskManager);
@@ -53,7 +53,7 @@ public class Main {
 
     }
 
-    private static void printHistory(TaskManager manager){
+    private static void printHistory(TaskManager manager) {
         System.out.println("История:");
         for (Task task : manager.getHistoryManager().getHistory()) {
             System.out.println(task);
