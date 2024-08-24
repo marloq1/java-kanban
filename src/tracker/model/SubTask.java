@@ -1,7 +1,5 @@
 package tracker.model;
 
-import java.util.Objects;
-
 public class SubTask extends Task {
 
     private Epic epic;

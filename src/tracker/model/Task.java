@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Task {
     private Status status;
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private int id;
 
     public Task(String name, String description,Status status) {
