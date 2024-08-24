@@ -25,7 +25,7 @@ class InMemoryTaskManagerTest {
     private SubTask subTask13;
     private Epic epic2;
     private SubTask subTask21;
-    private int idT1,idT2,idE1,idSt1,idSt2,idE2,idSt3,idSt4;
+    private int idT1, idT2, idE1, idSt1, idSt2, idE2, idSt3, idSt4;
 
     //Невозможно добавить в эпик эпик на уровне компиляции кода
     //Невозможно сделать SubTask своим же эпиком на уровне компиляции кода
@@ -51,17 +51,18 @@ class InMemoryTaskManagerTest {
         idSt4 = taskManager.subTaskPut(epic2, subTask21);
 
     }
+
     @Test
     public void TaskManagerCanFindTasksById() {
 
-        assertEquals(task1,taskManager.getTask(idT1));
-        assertEquals(task2,taskManager.getTask(idT2));
-        assertEquals(epic1,taskManager.getEpic(idE1));
-        assertEquals(subTask11,taskManager.getSubTask(idSt1));
-        assertEquals(subTask12,taskManager.getSubTask(idSt2));
-        assertEquals(subTask13,taskManager.getSubTask(idSt3));
-        assertEquals(epic2,taskManager.getEpic(idE2));
-        assertEquals(subTask21,taskManager.getSubTask(idSt4));
+        assertEquals(task1, taskManager.getTask(idT1));
+        assertEquals(task2, taskManager.getTask(idT2));
+        assertEquals(epic1, taskManager.getEpic(idE1));
+        assertEquals(subTask11, taskManager.getSubTask(idSt1));
+        assertEquals(subTask12, taskManager.getSubTask(idSt2));
+        assertEquals(subTask13, taskManager.getSubTask(idSt3));
+        assertEquals(epic2, taskManager.getEpic(idE2));
+        assertEquals(subTask21, taskManager.getSubTask(idSt4));
 
     }
 
@@ -72,12 +73,12 @@ class InMemoryTaskManagerTest {
         Task taskTest1 = taskManager.getTask(idT1);
         taskManager.epicsPut(epic1);
         Task taskTest2 = taskManager.getTask(idT1);
-        assertEquals(taskTest1,taskTest2);
-        assertEquals(taskTest1.getStatus(),taskTest2.getStatus());
-        taskManager.subTaskPut(epic1,subTask11);
+        assertEquals(taskTest1, taskTest2);
+        assertEquals(taskTest1.getStatus(), taskTest2.getStatus());
+        taskManager.subTaskPut(epic1, subTask11);
         taskTest2 = taskManager.getTask(idT1);
-        assertEquals(taskTest1,taskTest2);
-        assertEquals(taskTest1.getStatus(),taskTest2.getStatus());
+        assertEquals(taskTest1, taskTest2);
+        assertEquals(taskTest1.getStatus(), taskTest2.getStatus());
     }
 
     @Test
@@ -86,81 +87,80 @@ class InMemoryTaskManagerTest {
 
         Task taskTest1 = taskManager.getTask(idT1);
         Task taskTest2 = taskManager.getTask(idT2);
-        Epic  epicTest1 = taskManager.getEpic(idE1);
-        SubTask subTaskTest1 =taskManager.getSubTask(idSt1);
+        Epic epicTest1 = taskManager.getEpic(idE1);
+        SubTask subTaskTest1 = taskManager.getSubTask(idSt1);
 
-        Iterator iterator =  historyManager.getHistory().iterator();
-        assertEquals(iterator.next(),taskTest1);
-        assertEquals(iterator.next(),taskTest2);
-        assertEquals(iterator.next(),epicTest1);
-        assertEquals(iterator.next(),subTaskTest1);
+        Iterator iterator = historyManager.getHistory().iterator();
+        assertEquals(iterator.next(), taskTest1);
+        assertEquals(iterator.next(), taskTest2);
+        assertEquals(iterator.next(), epicTest1);
+        assertEquals(iterator.next(), subTaskTest1);
 
         Task taskTest3 = taskManager.getTask(idT1);
-        iterator =  historyManager.getHistory().iterator();
-        assertEquals(iterator.next(),taskTest2);
-        assertEquals(iterator.next(),epicTest1);
-        assertEquals(iterator.next(),subTaskTest1);
-        assertEquals(iterator.next(),taskTest3);
+        iterator = historyManager.getHistory().iterator();
+        assertEquals(iterator.next(), taskTest2);
+        assertEquals(iterator.next(), epicTest1);
+        assertEquals(iterator.next(), subTaskTest1);
+        assertEquals(iterator.next(), taskTest3);
 
     }
 
 
-
     @Test
     public void TasksReplace() {
-        assertEquals(task1,taskManager.getTask(idT1));
+        assertEquals(task1, taskManager.getTask(idT1));
         Task taskTest = new Task("Задача 1", "Действие таска тест", Status.NEW);
-        taskManager.taskReplace(idT1,taskTest);
-        assertNotEquals(task1.getDescription(),taskManager.getTask(idT1).getDescription());
-        assertEquals(taskTest,taskManager.getTask(idT1));
+        taskManager.taskReplace(idT1, taskTest);
+        assertNotEquals(task1.getDescription(), taskManager.getTask(idT1).getDescription());
+        assertEquals(taskTest, taskManager.getTask(idT1));
 
-        assertEquals(subTask11,taskManager.getSubTask(idSt1));
+        assertEquals(subTask11, taskManager.getSubTask(idSt1));
         SubTask subTaskTest = new SubTask("Подзадача 1", "Действие подтаска тест", Status.DONE);
-        taskManager.subTaskReplace(idSt1,epic1,subTaskTest);
-        assertNotEquals(subTask11.getDescription(),taskManager.getSubTask(idSt1).getDescription());
-        assertEquals(subTaskTest,taskManager.getSubTask(idSt1));
+        taskManager.subTaskReplace(idSt1, epic1, subTaskTest);
+        assertNotEquals(subTask11.getDescription(), taskManager.getSubTask(idSt1).getDescription());
+        assertEquals(subTaskTest, taskManager.getSubTask(idSt1));
 
-        assertEquals(epic1,taskManager.getEpic(idE1));
+        assertEquals(epic1, taskManager.getEpic(idE1));
         Epic epicTest = new Epic("Эпик 1", "Действие эпика тест");
-        taskManager.epicReplace(idE1,epicTest);
-        assertNotEquals(epic1.getDescription(),taskManager.getEpic(idE1).getDescription());
-        assertEquals(epicTest,taskManager.getEpic(idE1));
+        taskManager.epicReplace(idE1, epicTest);
+        assertNotEquals(epic1.getDescription(), taskManager.getEpic(idE1).getDescription());
+        assertEquals(epicTest, taskManager.getEpic(idE1));
 
     }
 
     @Test
     public void TaskDelete() {
-        assertEquals(task1,taskManager.getTask(idT1));
+        assertEquals(task1, taskManager.getTask(idT1));
         taskManager.deleteTask(idT1);
         assertNull(taskManager.getTask(idT1));
 
-        assertEquals(subTask11,taskManager.getSubTask(idSt1));
+        assertEquals(subTask11, taskManager.getSubTask(idSt1));
         taskManager.deleteSubtask(idSt1);
         assertNull(taskManager.getSubTask(idSt1));
         assertFalse(taskManager.getEpic(idE1).getSubtaskIds().contains(idSt1));
 
-        assertEquals(epic1,taskManager.getEpic(idE1));
+        assertEquals(epic1, taskManager.getEpic(idE1));
         List<SubTask> subtasks = taskManager.getSubtasks();
         taskManager.deleteEpic(idE1);
         List<SubTask> subtasks1 = taskManager.getSubtasks();
 
         assertNull(taskManager.getEpic(idE1));
-        assertNotEquals(subtasks,subtasks1);
+        assertNotEquals(subtasks, subtasks1);
     }
 
     @Test
     public void TaskListDelete() {
-        List<Task> tasks=taskManager.getTasks();
+        List<Task> tasks = taskManager.getTasks();
 
         taskManager.deleteTasks();
-        List<Task> tasks1=taskManager.getTasks();
-        assertNotEquals(tasks,tasks1);
+        List<Task> tasks1 = taskManager.getTasks();
+        assertNotEquals(tasks, tasks1);
 
         List<SubTask> subTasks = taskManager.getSubtasks();
         taskManager.deleteSubtasks();
         List<SubTask> subTasks1 = taskManager.getSubtasks();
         //List subTasks1 = taskManager.getEpics();
-        assertNotEquals(subTasks,subTasks1);
+        assertNotEquals(subTasks, subTasks1);
 
         List<Epic> epics = taskManager.getEpics();
         taskManager.deleteEpics();
@@ -178,20 +178,20 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void EpicStatus() {
-        assertEquals(epic1.getStatus(),Status.IN_PROGRESS);
-        taskManager.subTaskReplace(idSt1,epic1,new SubTask("Подзадача 3", "Действие подтаска 1", Status.NEW));
-        assertEquals(epic1.getStatus(),Status.NEW);
+        assertEquals(epic1.getStatus(), Status.IN_PROGRESS);
+        taskManager.subTaskReplace(idSt1, epic1, new SubTask("Подзадача 3", "Действие подтаска 1", Status.NEW));
+        assertEquals(epic1.getStatus(), Status.NEW);
         taskManager.subTaskPut(epic1, new SubTask("Подзадача 4", "Действие подтаска 1", Status.DONE));
-        assertEquals(epic1.getStatus(),Status.IN_PROGRESS);
-        taskManager.subTaskReplace(idSt1,epic1,new SubTask("Подзадача 5", "Действие подтаска 1", Status.DONE));
-        assertEquals(epic1.getStatus(),Status.IN_PROGRESS);
-        taskManager.subTaskReplace(idSt2,epic1,new SubTask("Подзадача 6", "Действие подтаска 1", Status.DONE));
-        taskManager.subTaskReplace(idSt3,epic1,new SubTask("Подзадача 7", "Действие подтаска 1", Status.DONE));
-        assertEquals(epic1.getStatus(),Status.DONE);
+        assertEquals(epic1.getStatus(), Status.IN_PROGRESS);
+        taskManager.subTaskReplace(idSt1, epic1, new SubTask("Подзадача 5", "Действие подтаска 1", Status.DONE));
+        assertEquals(epic1.getStatus(), Status.IN_PROGRESS);
+        taskManager.subTaskReplace(idSt2, epic1, new SubTask("Подзадача 6", "Действие подтаска 1", Status.DONE));
+        taskManager.subTaskReplace(idSt3, epic1, new SubTask("Подзадача 7", "Действие подтаска 1", Status.DONE));
+        assertEquals(epic1.getStatus(), Status.DONE);
         taskManager.deleteSubtasks();
-        assertEquals(epic1.getStatus(),Status.NEW);
-        taskManager.subTaskPut(epic1,new SubTask("Подзадача 6", "Действие подтаска 1", Status.IN_PROGRESS));
-        assertEquals(epic1.getStatus(),Status.IN_PROGRESS);
+        assertEquals(epic1.getStatus(), Status.NEW);
+        taskManager.subTaskPut(epic1, new SubTask("Подзадача 6", "Действие подтаска 1", Status.IN_PROGRESS));
+        assertEquals(epic1.getStatus(), Status.IN_PROGRESS);
 
     }
 
@@ -209,14 +209,14 @@ class InMemoryTaskManagerTest {
         taskManager.getTask(idT2);//9
         taskManager.getSubTask(idSt3);
         taskManager.getEpic(idE1);//10
-        SubTask subTask3 =  taskManager.getSubTask(idSt3);//11
-        assertEquals(historyManager.getHistory().get(3),task1);
+        SubTask subTask3 = taskManager.getSubTask(idSt3);//11
+        assertEquals(historyManager.getHistory().get(3), task1);
         taskManager.deleteTask(idT1);
         assertFalse(historyManager.getHistory().contains(task1));
-        assertEquals(historyManager.getHistory().get(4),epic1);
-        assertEquals(historyManager.getHistory().get(1),subTask1);
-        assertEquals(historyManager.getHistory().get(2),subTask2);
-        assertEquals(historyManager.getHistory().get(5),subTask3);
+        assertEquals(historyManager.getHistory().get(4), epic1);
+        assertEquals(historyManager.getHistory().get(1), subTask1);
+        assertEquals(historyManager.getHistory().get(2), subTask2);
+        assertEquals(historyManager.getHistory().get(5), subTask3);
         taskManager.deleteEpic(idE1);
         assertFalse(historyManager.getHistory().contains(epic1));
         assertFalse(historyManager.getHistory().contains(subTask1));
@@ -225,10 +225,6 @@ class InMemoryTaskManagerTest {
 
 
     }
-
-
-
-
 
 
 }
