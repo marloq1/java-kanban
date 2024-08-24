@@ -77,7 +77,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void subTaskReplace(int id, Epic epic, SubTask subTask) {//e) Обновление подзадачи
+    public void subTaskReplace(int id, Epic epic, SubTask subTask) { //e) Обновление подзадачи
         if (subtasks.containsKey(id)) {
             historyManager.remove(id);
             epic.getSubTasksMap().put(id, subTask);
@@ -143,7 +143,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpic(int id) {// c) Получение эпика с подзадачами по идентификатору
+    public Epic getEpic(int id) { // c) Получение эпика с подзадачами по идентификатору
 
         if (epics.containsKey(id)) {
             historyManager.add(epics.get(id));
@@ -163,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<SubTask> getSubTasksOfEpic(int id) {// 3.a) Получение списка всех подзадач определенного эпика
+    public List<SubTask> getSubTasksOfEpic(int id) { // 3.a) Получение списка всех подзадач определенного эпика
         if (epics.containsKey(id)) {
             return epics.get(id).getSubTasks();
         } else {
