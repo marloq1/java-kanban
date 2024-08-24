@@ -1,12 +1,10 @@
 package tracker.model;
 
-import java.util.Objects;
-
 public class SubTask extends Task {
 
     private Epic epic;
 
-    public SubTask(String name, String description,Status status) {
+    public SubTask(String name, String description, Status status) {
         super(name, description, status);
     }
 
@@ -15,7 +13,7 @@ public class SubTask extends Task {
         return "SubTask{" +
                 "status=" + getStatus() +
                 ", name='" + getName() + '\'' +
-                ", description='" + getDescription()+"}"
+                ", description='" + getDescription() + "}"
                 ;
     }
 
@@ -27,8 +25,6 @@ public class SubTask extends Task {
     public TaskType getType() {
         return TaskType.SUBTASK;
     }
-
-
 
 
     public Epic getEpic() {
