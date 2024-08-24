@@ -12,9 +12,23 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     //-----------MyLinkedList------------------//
 
+    private static class Node<T> {
+
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
+
+        private Node(T data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+
     private Node<Task> head;
     private Node<Task> tail;
-    private int size = 0;
+
+
 
     private Node<Task> linkLast(Task task) {
         if (head == null) {
@@ -26,14 +40,14 @@ public class InMemoryHistoryManager implements HistoryManager {
             tail.prev = oldTail;
             oldTail.next = tail;
         }
-        size++;
+
         return tail;
     }
 
     private List<Task> getTasks() {
         List<Task> tasksArr = new ArrayList<>();
         Node<Task> iterator = head;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < historyMap.size(); i++) {
             tasksArr.add(iterator.data);
             iterator = iterator.next;
         }
@@ -54,7 +68,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else { //Это tail
             tail = node.prev;
         }
-        size--;
     }
 
 
