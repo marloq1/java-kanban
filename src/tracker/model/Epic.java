@@ -2,7 +2,7 @@ package tracker.model;
 
 import java.util.*;
 
-public class Epic extends Task{
+public class Epic extends Task {
 
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
 
@@ -10,11 +10,11 @@ public class Epic extends Task{
         super(name, description);
     }
 
-    public List <SubTask> getSubTasks() {
+    public List<SubTask> getSubTasks() {
         return new ArrayList<>(subTasks.values());
     }
 
-    public Map <Integer,SubTask> getSubTasksMap() {
+    public Map<Integer, SubTask> getSubTasksMap() {
         return subTasks;
     }
 
@@ -22,7 +22,6 @@ public class Epic extends Task{
     public TaskType getType() {
         return TaskType.EPIC;
     }
-
 
 
     public List<Integer> getSubtaskIds() {
@@ -43,7 +42,7 @@ public class Epic extends Task{
         return "Epic{" +
                 "status=" + getStatus() +
                 ", name='" + getName() + '\'' +
-                ", description='" + getDescription()  +
-                ", {subTasks=" + subTasks+"}}";
+                ", description='" + getDescription() +
+                ", {subTasks=" + subTasks + "}}";
     }
 }

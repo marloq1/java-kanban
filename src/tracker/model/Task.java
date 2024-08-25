@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public class Task {
     private Status status;
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private int id;
 
-    public Task(String name, String description,Status status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
-        this.status=status;
+        this.status = status;
 
     }
+
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
-
 
 
     @Override
@@ -26,12 +26,12 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return task.id == id ;
+        return task.id == id;
 
     }
 
     public Status getStatus() {
-            return status;
+        return status;
 
     }
 
@@ -46,13 +46,11 @@ public class Task {
     public String getDescription() {
         return description;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
-
-
-
 
 
     @Override
@@ -60,13 +58,14 @@ public class Task {
         return "Task{" +
                 "status=" + status +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\''+"}";
+                ", description='" + description + '\'' + "}";
     }
 
     public int getId() {
         return id;
 
     }
+
     public TaskType getType() {
         return TaskType.TASK;
     }
