@@ -4,14 +4,19 @@ import tracker.model.SubTask;
 import tracker.model.Task;
 import tracker.model.Epic;
 
+import java.nio.file.Paths;
+
 public class Main {
     public static TaskManager taskManager;
 
 
     public static void main(String[] args) {
 
-        taskManager = Managers.getDefault();
-        Task task1 = new Task("Задача 1", "Действие", Status.NEW);
+       // taskManager1 = Managers.getDefault();
+        //taskManager = new FileBackedTaskManager();
+        taskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\Users\\yogua\\dev\\10.txt").toFile());
+        System.out.println();
+       /* Task task1 = new Task("Задача 1", "Действие", Status.NEW);
         Task task2 = new Task("Задача 2", "Действие", Status.NEW);
         Epic epic1 = new Epic("Эпик 1", "Действие");
         SubTask subTask11 = new SubTask("Подзадача 1", "Действие", Status.DONE);
@@ -24,8 +29,8 @@ public class Main {
         int idSt1 = taskManager.subTaskPut(epic1, subTask11);
         int idSt2 = taskManager.subTaskPut(epic1, subTask12);
         int idSt3 = taskManager.subTaskPut(epic1, subTask13);
-        int idE2 = taskManager.epicsPut(epic2);
-        taskManager.getTask(idT1); //1
+        int idE2 = taskManager.epicsPut(epic2);*/
+        /*taskManager.getTask(idT1); //1
         taskManager.getTask(idT2); //2
         taskManager.getEpic(idE1); //3
         taskManager.getEpic(idE2); //4
@@ -49,7 +54,7 @@ public class Main {
         taskManager.deleteEpic(idE1);
         System.out.println();
         printHistory(taskManager);
-
+*/
 
     }
 

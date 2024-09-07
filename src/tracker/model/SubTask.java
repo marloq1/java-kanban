@@ -10,11 +10,10 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                "status=" + getStatus() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + "}"
-                ;
+        return String.format("%d,%s,%s,%s,%s,%s\n",(getId()),
+                getType(),getName(),
+                getStatus(),
+                getDescription(),getEpicId());
     }
 
     public void setEpic(Epic epic) {
@@ -30,6 +29,15 @@ public class SubTask extends Task {
     public Epic getEpic() {
         return epic;
     }
+
+
+
+    public static SubTask fromString(String s){
+        String[] parameters = s.split(",");
+        return new SubTask(parameters[2], parameters[4], Status.valueOf(parameters[3]));
+    }
+
+
 
     public int getEpicId() {
         return epic.getId();

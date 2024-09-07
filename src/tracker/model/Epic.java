@@ -32,17 +32,16 @@ public class Epic extends Task {
         subTasks.remove(id);
     }
 
+
+    public static Epic fromString(String s){
+        String[] parameters = s.split(",");
+        return new Epic(parameters[2], parameters[4]);
+    }
+
     public void cleanSubtaskIds() {
         subTasks.clear();
     }
 
 
-    @Override
-    public String toString() {
-        return "Epic{" +
-                "status=" + getStatus() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() +
-                ", {subTasks=" + subTasks + "}}";
-    }
+
 }
