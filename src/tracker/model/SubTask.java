@@ -32,7 +32,7 @@ public class SubTask extends Task {
 
 
 
-    public static SubTask fromString(String s){
+    public static SubTask fromString(String s) {
         String[] parameters = s.split(",");
         return new SubTask(parameters[2], parameters[4], Status.valueOf(parameters[3]));
     }

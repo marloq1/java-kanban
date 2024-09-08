@@ -33,7 +33,7 @@ public class Epic extends Task {
     }
 
 
-    public static Epic fromString(String s){
+    public static Epic fromString(String s) {
         String[] parameters = s.split(",");
         return new Epic(parameters[2], parameters[4]);
     }

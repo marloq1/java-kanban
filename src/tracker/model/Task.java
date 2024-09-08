@@ -66,7 +66,7 @@ public class Task {
 
     }
 
-    public static Task fromString(String s){
+    public static Task fromString(String s) {
         String[] parameters = s.split(",");
         return new Task(parameters[2], parameters[4], Status.valueOf(parameters[3]));
     }
