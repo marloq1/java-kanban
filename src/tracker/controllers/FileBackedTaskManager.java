@@ -1,7 +1,6 @@
 package tracker.controllers;
 
 import tracker.model.Epic;
-import tracker.model.Status;
 import tracker.model.SubTask;
 import tracker.model.Task;
 
@@ -184,8 +183,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
 
-        } catch (IOException|IndexOutOfBoundsException e) {
-
+        } catch (IOException | IndexOutOfBoundsException e) {
+            throw new ManagerSaveException();
         }
         return taskManager;
     }
