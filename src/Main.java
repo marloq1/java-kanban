@@ -28,7 +28,7 @@ public class Main {
         taskManager.subTaskPut(epic1, subTask12);
         taskManager.subTaskPut(epic1, subTask13);
         taskManager.epicsPut(epic2);
-        taskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\Users\\yogua\\dev\\java-kanban.txt").toFile());
+        taskManager = FileBackedTaskManager.loadFromFile(Paths.get("resources\\TasksMemory").toFile());
 
 
     }

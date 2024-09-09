@@ -1,5 +1,7 @@
 package tracker.controllers;
 
+import com.sun.jdi.Value;
+import tracker.exeptions.ManagerSaveException;
 import tracker.model.Epic;
 import tracker.model.SubTask;
 import tracker.model.Task;
@@ -71,46 +73,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public List<Task> getTasks() {
-        return super.getTasks();
-    }
-
-    @Override
-    public List<SubTask> getSubtasks() {
-        return super.getSubtasks();
-    }
-
-    @Override
-    public List<Epic> getEpics() {
-        return super.getEpics();
-    }
-
-    @Override
-    public Task getTask(int id) {
-        return super.getTask(id);
-    }
-
-    @Override
-    public Epic getEpic(int id) {
-        return super.getEpic(id);
-    }
-
-    @Override
-    public SubTask getSubTask(int id) {
-        return super.getSubTask(id);
-    }
-
-    @Override
-    public List<SubTask> getSubTasksOfEpic(int id) {
-        return super.getSubTasksOfEpic(id);
-    }
-
-    @Override
-    public void updateEpicStatus(Epic epic) {
-        super.updateEpicStatus(epic);
-    }
-
-    @Override
     public void deleteTasks() {
         super.deleteTasks();
         save();
@@ -128,13 +90,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    @Override
-    public HistoryManager getHistoryManager() {
-        return super.getHistoryManager();
-    }
-
     public void save() {
-        try (FileWriter writer = new FileWriter("C:\\Users\\yogua\\dev\\java-kanban.txt")) {
+        try (FileWriter writer = new FileWriter( "resources\\TasksMemory")) {
             writer.write("id,type,name,status,description,epic\n");
             for (Task task : tasks.values()) {
                 writer.write(task.toString());
@@ -150,6 +107,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException();
         }
     }
+
+
 
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager taskManager = new FileBackedTaskManager();
@@ -187,17 +146,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException();
         }
         return taskManager;
-    }
-
-    private static class ManagerSaveException extends RuntimeException {
-
-        ManagerSaveException(String message) {
-            super(message);
-        }
-
-        ManagerSaveException() {
-
-        }
-
     }
 }
