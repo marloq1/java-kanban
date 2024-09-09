@@ -35,7 +35,7 @@ class FileBackedTaskManagerTest {
         List<Task> tasksBeforeLoad = taskManager.getTasks();
         List<Epic> epicsBeforeLoad = taskManager.getEpics();
         List<SubTask> subTasksBeforeLoad = taskManager.getSubtasks();
-        taskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\Users\\yogua\\dev\\java-kanban.txt").toFile());
+        taskManager = FileBackedTaskManager.loadFromFile(Paths.get("resources\\TasksMemory").toFile());
         List<Task> tasksAfterLoad = taskManager.getTasks();
         List<Epic> epicsAfterLoad = taskManager.getEpics();
         List<SubTask> subTasksAfterLoad = taskManager.getSubtasks();
@@ -57,7 +57,7 @@ class FileBackedTaskManagerTest {
         assertTrue(emptyManager.tasks.isEmpty());
         assertTrue(emptyManager.epics.isEmpty());
         assertTrue(emptyManager.subtasks.isEmpty());
-        emptyManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\Users\\yogua\\dev\\java-kanban.txt").toFile());
+        emptyManager = FileBackedTaskManager.loadFromFile(Paths.get("resources\\TasksMemory").toFile());
         assertTrue(emptyManager.tasks.isEmpty());
         assertTrue(emptyManager.epics.isEmpty());
         assertTrue(emptyManager.subtasks.isEmpty());
