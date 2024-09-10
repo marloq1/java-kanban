@@ -55,15 +55,20 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "status=" + status +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' + "}";
+        return String.format("%d,%s,%s,%s,%s\n",(getId()),
+                getType(),getName(),
+                getStatus(),
+                getDescription());
     }
 
     public int getId() {
         return id;
 
+    }
+
+    public static Task fromString(String s) {
+        String[] parameters = s.split(",");
+        return new Task(parameters[2], parameters[4], Status.valueOf(parameters[3]));
     }
 
     public TaskType getType() {
