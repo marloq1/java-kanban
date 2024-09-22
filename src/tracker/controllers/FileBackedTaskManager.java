@@ -91,7 +91,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (FileWriter writer = new FileWriter("resources\\TasksMemory")) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,epic,startTime,duration\n");
             for (Task task : tasks.values()) {
                 writer.write(task.toString());
             }
@@ -121,6 +121,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         Task task = Task.fromString(s);
                         task.setId(Integer.parseInt(parameters[0]));
                         taskManager.tasks.put(Integer.parseInt(parameters[0]), task);
+
                         break;
                     case "EPIC":
                         Epic epic = Epic.fromString(s);
@@ -138,6 +139,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             for (Epic epic : taskManager.epics.values()) {
                 taskManager.updateEpicStatus(epic);
+                epic.updateTime();
             }
 
 
