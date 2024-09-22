@@ -260,8 +260,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Set<Task> getPrioritizedTasks() {
         return Stream.concat(tasks.values().stream(),
-                        subtasks.values().stream()).filter(task -> task.getStartTime() != null).
-                collect(Collectors.toCollection(() -> new TreeSet<>((task1, task2) -> {
+                        subtasks.values().stream()).filter(task -> task.getStartTime() != null)
+                        .collect(Collectors.toCollection(() -> new TreeSet<>((task1, task2) -> {
                     if (task1.getStartTime().isBefore(task2.getStartTime())) {
                         return -1;
                     } else if (task1.getStartTime().isAfter(task2.getStartTime()) || (task2.getStartTime() == null)) {
@@ -278,8 +278,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (task.getStartTime() == null) {
             return true;
         } else {
-            return sortedSet.stream().
-                    filter(task1 -> !(task1.getEndTime().get().isBefore(task.getStartTime())
+            return sortedSet.stream()
+                    .filter(task1 -> !(task1.getEndTime().get().isBefore(task.getStartTime())
                             || task1.getEndTime().get().isEqual(task.getStartTime())))
                     .filter(task1 -> !(task1.getStartTime().isAfter(task.getEndTime().get())
                             || task1.getStartTime().isEqual(task.getEndTime().get())))
