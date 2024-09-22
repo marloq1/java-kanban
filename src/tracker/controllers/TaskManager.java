@@ -6,6 +6,8 @@ import tracker.model.Epic;
 
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface TaskManager {
     int taskPut(Task task);
@@ -38,14 +40,17 @@ public interface TaskManager {
 
     void deleteEpics();
 
-    Task getTask(int id);
+    Optional<Task> getTask(int id);
 
-    Epic getEpic(int id);
+    Optional<Epic> getEpic(int id);
 
-    SubTask getSubTask(int id);
+    Optional<SubTask> getSubTask(int id);
 
     List<SubTask> getSubTasksOfEpic(int id);
 
     HistoryManager getHistoryManager();
 
+    Set<Task> getPrioritizedTasks();
+
+    boolean validateTask(Task task);
 }
