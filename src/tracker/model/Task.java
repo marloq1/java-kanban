@@ -99,7 +99,7 @@ public class Task {
             return String.format("%d,%s,%s,%s,%s,%s,%d минут\n", (getId()),
                     getType(), getName(),
                     getStatus(),
-                    getDescription(),startDate,duration);
+                    getDescription(), startDate, duration);
         }
     }
 
@@ -110,13 +110,13 @@ public class Task {
 
     public static Task fromString(String s) {
         String[] parameters = s.split(",");
-        if (parameters.length<=5) {
+        if (parameters.length <= 5) {
             return new Task(parameters[2], parameters[4], Status.valueOf(parameters[3]));
         } else
             return new Task(parameters[2],
                     parameters[4],
                     Status.valueOf(parameters[3]),
-                    LocalDateTime.parse(parameters[5],formatter),
+                    LocalDateTime.parse(parameters[5], formatter),
                     Duration.ofMinutes(Integer.parseInt(parameters[6].split(" ")[0])));
     }
 

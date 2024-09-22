@@ -48,7 +48,7 @@ public class Epic extends Task {
 
     @Override
     public Optional<LocalDateTime> getEndTime() {
-        if (getStartTime()!=null){
+        if (getStartTime() != null) {
             return Optional.of(endTime);
         } else {
             return Optional.empty();
@@ -59,22 +59,22 @@ public class Epic extends Task {
         boolean isFirst = true;
         LocalDateTime bufStart = null;
         LocalDateTime bufEnd = null;
-        for (SubTask subTask:subTasks.values()){
-            if (subTask.getEndTime().isPresent()){
-                if (isFirst){
+        for (SubTask subTask : subTasks.values()) {
+            if (subTask.getEndTime().isPresent()) {
+                if (isFirst) {
                     bufStart = subTask.getStartTime();
                     bufEnd = subTask.getEndTime().get();
                     isFirst = false;
                 }
-                if (subTask.getStartTime().isBefore(bufStart)){
+                if (subTask.getStartTime().isBefore(bufStart)) {
                     bufStart = subTask.getStartTime();
                 }
-                if (subTask.getEndTime().get().isAfter(bufEnd)){
+                if (subTask.getEndTime().get().isAfter(bufEnd)) {
                     bufEnd = subTask.getEndTime().get();
                 }
             }
         }
-        if (bufStart!=null){
+        if (bufStart != null) {
             setStartTime(bufStart);
             endTime = bufEnd;
             setDuration(Duration.between(getStartTime(), endTime));

@@ -30,7 +30,7 @@ public class SubTask extends Task {
             return String.format("%d,%s,%s,%s,%s,%s,%s,%d минут\n", (getId()),
                     getType(), getName(),
                     getStatus(),
-                    getDescription(),getEpicId(),startDate,duration);
+                    getDescription(), getEpicId(), startDate, duration);
         }
     }
 
@@ -53,13 +53,13 @@ public class SubTask extends Task {
     public static SubTask fromString(String s) {
 
         String[] parameters = s.split(",");
-        if (parameters.length<=6) {
+        if (parameters.length <= 6) {
             return new SubTask(parameters[2], parameters[4], Status.valueOf(parameters[3]));
         } else
             return new SubTask(parameters[2],
                     parameters[4],
                     Status.valueOf(parameters[3]),
-                    LocalDateTime.parse(parameters[6],formatter),
+                    LocalDateTime.parse(parameters[6], formatter),
                     Duration.ofMinutes(Integer.parseInt(parameters[7].split(" ")[0])));
     }
 
