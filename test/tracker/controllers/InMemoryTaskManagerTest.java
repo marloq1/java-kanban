@@ -96,7 +96,7 @@ class InMemoryTaskManagerTest {
         assertEquals(iterator.next(), epicTest1);
         assertEquals(iterator.next(), subTaskTest1);
 
-         taskTest1 = taskManager.getTask(idT1).get();
+        taskTest1 = taskManager.getTask(idT1).get();
         iterator = historyManager.getHistory().iterator();
         assertEquals(iterator.next(), taskTest2);
         assertEquals(iterator.next(), epicTest1);
@@ -104,17 +104,17 @@ class InMemoryTaskManagerTest {
         assertEquals(iterator.next(), taskTest1);
 
         taskTest1 = taskManager.getTask(idT1).get();
-        assertEquals(historyManager.getHistory().get(0),taskTest2);
-        assertEquals(historyManager.getHistory().get(3),taskTest1);
+        assertEquals(historyManager.getHistory().get(0), taskTest2);
+        assertEquals(historyManager.getHistory().get(3), taskTest1);
         historyManager.remove(idT1);
-        assertTrue(historyManager.getHistory().size()==3);
+        assertTrue(historyManager.getHistory().size() == 3);
         historyManager.remove(idT2);
-        assertEquals(historyManager.getHistory().get(0),epicTest1);
-        assertEquals(historyManager.getHistory().get(1),subTaskTest1);
-        taskTest2 =taskManager.getTask(idT2).get();
+        assertEquals(historyManager.getHistory().get(0), epicTest1);
+        assertEquals(historyManager.getHistory().get(1), subTaskTest1);
+        taskTest2 = taskManager.getTask(idT2).get();
         historyManager.remove(idSt1);
-        assertEquals(historyManager.getHistory().get(0),epicTest1);
-        assertEquals(historyManager.getHistory().get(1),taskTest2);
+        assertEquals(historyManager.getHistory().get(0), epicTest1);
+        assertEquals(historyManager.getHistory().get(1), taskTest2);
 
     }
 
@@ -240,27 +240,79 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void intersectionCheck(){
+    public void intersectionCheck() {
         Task newTask = new Task("Задача 1", "Действие", Status.NEW,
-                LocalDateTime.of(2024,9,22,13,30), Duration.ofHours(1));
+                LocalDateTime.of(2024, 9, 22, 13, 30), Duration.ofHours(1));
         taskManager.taskReplace(idT1, newTask);
         SubTask newSubTask1 = new SubTask("Подзадача 2", "Действие", Status.NEW,
-                LocalDateTime.of(2024,9,22,11,30), Duration.ofHours(2));
-        taskManager.subTaskReplace(idSt2,epic1,newSubTask1);
+                LocalDateTime.of(2024, 9, 22, 11, 30), Duration.ofHours(2));
+        taskManager.subTaskReplace(idSt2, epic1, newSubTask1);
         SubTask newSubTask2 = new SubTask("Подзадача 3", "Действие", Status.IN_PROGRESS,
-                LocalDateTime.of(2024,9,22,10,30), Duration.ofHours(1));
-        taskManager.subTaskReplace(idSt3,epic1,newSubTask2);
-        assertEquals(taskManager.getTask(idT1).get(),newTask);
-        assertEquals(taskManager.getSubTask(idSt2).get(),newSubTask1);
-        assertEquals(taskManager.getSubTask(idSt3).get(),newSubTask2);
+                LocalDateTime.of(2024, 9, 22, 10, 30), Duration.ofHours(1));
+        taskManager.subTaskReplace(idSt3, epic1, newSubTask2);
+        assertEquals(taskManager.getTask(idT1).get(), newTask);
+        assertEquals(taskManager.getSubTask(idSt2).get(), newSubTask1);
+        assertEquals(taskManager.getSubTask(idSt3).get(), newSubTask2);
         Task crossedTask = new Task("Задача 1", "Действие", Status.NEW,
-                LocalDateTime.of(2024,9,22,12,30), Duration.ofHours(1));
-        taskManager.taskReplace(idT1,crossedTask);
-        assertNotEquals(taskManager.getTask(idT1).get(),crossedTask);
+                LocalDateTime.of(2024, 9, 22, 12, 30), Duration.ofHours(1));
+        taskManager.taskReplace(idT1, crossedTask);
+        assertNotEquals(taskManager.getTask(idT1).get(), crossedTask);
         SubTask crossedSubTask = new SubTask("Подзадача 2", "Действие", Status.NEW,
-                LocalDateTime.of(2024,9,22,11,0), Duration.ofHours(2));
-        taskManager.subTaskReplace(idSt1,epic1,crossedSubTask);
+                LocalDateTime.of(2024, 9, 22, 11, 0), Duration.ofHours(2));
+        taskManager.subTaskReplace(idSt1, epic1, crossedSubTask);
 
+    }
+
+    @Test
+    public void prioritizedSetCheck() {
+        assertTrue(taskManager.getPrioritizedTasks().isEmpty());
+        Task newTask = new Task("Задача 1", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 13, 30), Duration.ofHours(1));
+        taskManager.taskReplace(idT1, newTask);
+        assertTrue(taskManager.getPrioritizedTasks().contains(newTask));
+        SubTask newSubTask1 = new SubTask("Подзадача 2", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 11, 30), Duration.ofHours(2));
+        taskManager.subTaskReplace(idSt2, epic1, newSubTask1);
+        assertTrue(taskManager.getPrioritizedTasks().contains(newSubTask1));
+        SubTask newSubTask2 = new SubTask("Подзадача 3", "Действие", Status.IN_PROGRESS,
+                LocalDateTime.of(2024, 9, 22, 10, 30), Duration.ofHours(1));
+        taskManager.subTaskReplace(idSt3, epic1, newSubTask2);
+        assertTrue(taskManager.getPrioritizedTasks().contains(newSubTask2));
+        taskManager.deleteTask(idT1);
+        assertFalse(taskManager.getPrioritizedTasks().contains(newTask));
+        taskManager.deleteSubtask(idSt2);
+        assertFalse(taskManager.getPrioritizedTasks().contains(newSubTask1));
+        newTask = new Task("Задача 3", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 10, 30), Duration.ofHours(1));
+        taskManager.taskPut(newTask);
+        assertFalse(taskManager.getPrioritizedTasks().contains(newTask));
+        newSubTask2 = new SubTask("Подзадача 4", "Действие", Status.IN_PROGRESS,
+                LocalDateTime.of(2024, 9, 22, 11, 30), Duration.ofHours(1));
+        taskManager.subTaskPut(epic1, newSubTask2);
+        assertTrue(taskManager.getPrioritizedTasks().contains(newSubTask2));
+
+    }
+
+    @Test
+    public void EpicTimeTest() {
+        Task newTask = new Task("Задача 1", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 13, 30), Duration.ofHours(1));
+        taskManager.taskReplace(idT1, newTask);
+        SubTask newSubTask1 = new SubTask("Подзадача 2", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 11, 30), Duration.ofHours(2));
+        taskManager.subTaskReplace(idSt2, epic1, newSubTask1);
+        SubTask newSubTask2 = new SubTask("Подзадача 3", "Действие", Status.IN_PROGRESS,
+                LocalDateTime.of(2024, 9, 22, 10, 30), Duration.ofHours(1));
+        taskManager.subTaskReplace(idSt3, epic1, newSubTask2);
+        assertEquals(epic1.getDuration().toMinutes(), 180);
+        assertTrue(epic1.getStartTime().isEqual(newSubTask2.getStartTime()));
+        assertTrue(epic1.getEndTime().get().isEqual(newSubTask1.getEndTime().get()));
+        SubTask newSubTask3 = new SubTask("Подзадача 2", "Действие", Status.NEW,
+                LocalDateTime.of(2024, 9, 22, 16, 30), Duration.ofHours(4));
+        taskManager.subTaskPut(epic1, newSubTask3);
+        assertEquals(epic1.getDuration().toMinutes(), 420);
+        assertTrue(epic1.getStartTime().isEqual(newSubTask2.getStartTime()));
+        assertTrue(epic1.getEndTime().get().isEqual(newSubTask3.getEndTime().get()));
     }
 
 

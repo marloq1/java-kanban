@@ -59,8 +59,10 @@ public class Epic extends Task {
         boolean isFirst = true;
         LocalDateTime bufStart = null;
         LocalDateTime bufEnd = null;
+        long minutes = 0L;
         for (SubTask subTask : subTasks.values()) {
             if (subTask.getEndTime().isPresent()) {
+                minutes += subTask.getDuration().toMinutes();
                 if (isFirst) {
                     bufStart = subTask.getStartTime();
                     bufEnd = subTask.getEndTime().get();
@@ -77,7 +79,7 @@ public class Epic extends Task {
         if (bufStart != null) {
             setStartTime(bufStart);
             endTime = bufEnd;
-            setDuration(Duration.between(getStartTime(), endTime));
+            setDuration(Duration.ofMinutes(minutes));
         } else {
             setStartTime(null);
             endTime = null;

@@ -7,7 +7,6 @@ import tracker.model.Epic;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface TaskManager {
     int taskPut(Task task);
@@ -50,7 +49,7 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 
-    Set<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 
     boolean validateTask(Task task);
 }
