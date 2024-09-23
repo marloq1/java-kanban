@@ -91,7 +91,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (FileWriter writer = new FileWriter("resources\\TasksMemory")) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,epic,startTime,duration\n");
             for (Task task : tasks.values()) {
                 writer.write(task.toString());
             }
@@ -108,7 +108,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
 
-
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager taskManager = new FileBackedTaskManager();
         try (BufferedReader bufferedReader = Files.newBufferedReader(Paths.get(file.toString()))) {
@@ -121,6 +120,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         Task task = Task.fromString(s);
                         task.setId(Integer.parseInt(parameters[0]));
                         taskManager.tasks.put(Integer.parseInt(parameters[0]), task);
+                        if (task.getEndTime().isPresent()) {
+                            taskManager.prioritizedTasks.add(task);
+                        }
                         break;
                     case "EPIC":
                         Epic epic = Epic.fromString(s);
@@ -133,11 +135,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         taskManager.epics.get(Integer.parseInt(parameters[5])).getSubTasksMap().put(Integer.parseInt(parameters[0]), subTask);
                         subTask.setId(Integer.parseInt(parameters[0]));
                         taskManager.subtasks.put(Integer.parseInt(parameters[0]), subTask);
+                        if (subTask.getEndTime().isPresent()) {
+                            taskManager.prioritizedTasks.add(subTask);
+                        }
                         break;
                 }
             }
             for (Epic epic : taskManager.epics.values()) {
                 taskManager.updateEpicStatus(epic);
+                epic.updateTime();
             }
 
 

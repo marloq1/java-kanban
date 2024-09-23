@@ -1,8 +1,12 @@
 package tracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Epic extends Task {
+
+    private LocalDateTime endTime;
 
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
 
@@ -42,6 +46,45 @@ public class Epic extends Task {
         subTasks.clear();
     }
 
+    @Override
+    public Optional<LocalDateTime> getEndTime() {
+        if (getStartTime() != null) {
+            return Optional.of(endTime);
+        } else {
+            return Optional.empty();
+        }
+    }
 
+    public void updateTime() {
+        boolean isFirst = true;
+        LocalDateTime bufStart = null;
+        LocalDateTime bufEnd = null;
+        long minutes = 0L;
+        for (SubTask subTask : subTasks.values()) {
+            if (subTask.getEndTime().isPresent()) {
+                minutes += subTask.getDuration().toMinutes();
+                if (isFirst) {
+                    bufStart = subTask.getStartTime();
+                    bufEnd = subTask.getEndTime().get();
+                    isFirst = false;
+                }
+                if (subTask.getStartTime().isBefore(bufStart)) {
+                    bufStart = subTask.getStartTime();
+                }
+                if (subTask.getEndTime().get().isAfter(bufEnd)) {
+                    bufEnd = subTask.getEndTime().get();
+                }
+            }
+        }
+        if (bufStart != null) {
+            setStartTime(bufStart);
+            endTime = bufEnd;
+            setDuration(Duration.ofMinutes(minutes));
+        } else {
+            setStartTime(null);
+            endTime = null;
+            setDuration(null);
+        }
 
+    }
 }
