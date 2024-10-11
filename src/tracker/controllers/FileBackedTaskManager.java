@@ -140,6 +140,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         }
                         break;
                 }
+                if (!parameters[0].equals("id")&&taskManager.generatorId < Integer.parseInt(parameters[0])) {
+                    taskManager.generatorId = Integer.parseInt(parameters[0]);
+                }
             }
             for (Epic epic : taskManager.epics.values()) {
                 taskManager.updateEpicStatus(epic);

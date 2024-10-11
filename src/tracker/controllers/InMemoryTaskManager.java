@@ -26,7 +26,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
-    private int generatorId = 0;
+    protected int generatorId = 0;
 
 
     @Override
