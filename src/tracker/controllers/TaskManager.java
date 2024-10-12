@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TaskManager {
     int taskPut(Task task);
 
-    void taskReplace(int id, Task task);
+    boolean taskReplace(int id, Task task);
 
     void deleteTask(int id);
 
@@ -31,7 +31,7 @@ public interface TaskManager {
 
     int subTaskPut(Epic epic, SubTask subTask);
 
-    void subTaskReplace(int id, Epic epic, SubTask subTask);
+    boolean subTaskReplace(int id, Epic epic, SubTask subTask);
 
     void deleteTasks();
 
