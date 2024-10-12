@@ -36,9 +36,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void taskReplace(int id, Task task) {
-        super.taskReplace(id, task);
+    public boolean taskReplace(int id, Task task) {
+        boolean b = super.taskReplace(id, task);
         save();
+        return b;
     }
 
     @Override
@@ -48,9 +49,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void subTaskReplace(int id, Epic epic, SubTask subTask) {
-        super.subTaskReplace(id, epic, subTask);
+    public boolean subTaskReplace(int id, Epic epic, SubTask subTask) {
+        boolean b = super.subTaskReplace(id, epic, subTask);
         save();
+        return b;
     }
 
     @Override
@@ -140,7 +142,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         }
                         break;
                 }
-                if (!parameters[0].equals("id")&&taskManager.generatorId < Integer.parseInt(parameters[0])) {
+                if (!parameters[0].equals("id") && taskManager.generatorId < Integer.parseInt(parameters[0])) {
                     taskManager.generatorId = Integer.parseInt(parameters[0]);
                 }
             }
