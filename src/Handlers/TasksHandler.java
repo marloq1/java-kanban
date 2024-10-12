@@ -1,4 +1,4 @@
-package handlers;
+package Handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -45,7 +45,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 if (uri.split("/").length == 2) {
                     InputStream inputStream = exchange.getRequestBody();
                     String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-                    Task task;
+                    Task task = null;
                     try {
                         task = gson.fromJson(body, Task.class);
                     } catch (JsonSyntaxException e) {

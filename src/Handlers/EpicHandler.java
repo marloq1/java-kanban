@@ -1,18 +1,20 @@
-package handlers;
+package Handlers;
 
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.google.gson.*;
-import tracker.model.SubTask;
-import tracker.model.Task;
+import tracker.model.Epic;
+
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import static server.HttpTaskServer.taskManager;
-import static server.HttpTaskServer.gson;
 
-public class TasksHandler extends BaseHttpHandler implements HttpHandler {
+import static server.HttpTaskServer.gson;
+import static server.HttpTaskServer.taskManager;
+
+public class EpicHandler extends BaseHttpHandler implements HttpHandler {
+
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -25,16 +27,32 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             case "GET":
 
                 if (uri.split("/").length == 2) {
-                    String tasksJson = gson.toJson(taskManager.getTasks());
+                    String tasksJson = gson.toJson(taskManager.getEpics());
                     sendText(exchange, tasksJson);
                 } else if (uri.split("/").length == 3) {
                     try {
-                        if (taskManager.getTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
-                            sendText(exchange, gson.toJson(taskManager.getTask(Integer.parseInt(uri.split("/")[2])).get()));
+                        if (taskManager.getEpic(Integer.parseInt(uri.split("/")[2])).isPresent()) {
+                            sendText(exchange, gson.toJson(taskManager
+                                    .getEpic(Integer.parseInt(uri.split("/")[2])).get()));
                         } else {
                             sendCode(exchange, 404);
                         }
                     } catch (NumberFormatException e) {
+                        sendCode(exchange, 404);
+                    }
+                } else if (uri.split("/").length == 4) {
+                    if (uri.split("/")[3].equals("subtasks")) {
+                        try {
+                            if (taskManager.getEpic(Integer.parseInt(uri.split("/")[2])).isPresent()) {
+                                sendText(exchange, gson.toJson(taskManager
+                                        .getSubTasksOfEpic(Integer.parseInt(uri.split("/")[2]))));
+                            } else {
+                                sendCode(exchange, 404);
+                            }
+                        } catch (NumberFormatException e) {
+                            sendCode(exchange, 404);
+                        }
+                    } else {
                         sendCode(exchange, 404);
                     }
                 } else {
@@ -45,29 +63,23 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 if (uri.split("/").length == 2) {
                     InputStream inputStream = exchange.getRequestBody();
                     String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-                    Task task;
+                    Epic epic;
                     try {
-                        task = gson.fromJson(body, Task.class);
+                        epic = gson.fromJson(body, Epic.class);
                     } catch (JsonSyntaxException e) {
                         sendCode(exchange, 400);
                         return;
                     }
-                    if ((task != null) && (!(task instanceof SubTask))) {
-                        if (task.getId() == 0) {
-                            if (taskManager.taskPut(task) == 0) {
+                    if ((epic != null)) {
+                        if (epic.getId() == 0) {
+                            if (taskManager.epicsPut(epic) == 0) {
                                 sendCode(exchange, 406);
                             } else {
                                 sendCode(exchange, 201);
                             }
                         } else {
-                            boolean wasReplaced = taskManager.taskReplace(task.getId(), task);
-                            if (wasReplaced) {
-                                sendCode(exchange, 201);
-                            } else {
-                                sendCode(exchange, 406);
-                            }
-
-
+                            taskManager.epicReplace(epic.getId(), epic);
+                            sendCode(exchange, 201);
                         }
                     } else {
                         sendCode(exchange, 400);
@@ -79,10 +91,10 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             case "DELETE":
                 if (uri.split("/").length == 3) {
                     try {
-                        if (taskManager.getTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
-                            Task taskToRemove = taskManager.getTask(Integer.parseInt(uri.split("/")[2])).get();
-                            taskManager.deleteTask(Integer.parseInt(uri.split("/")[2]));
-                            sendText(exchange, gson.toJson(taskToRemove));
+                        if (taskManager.getEpic(Integer.parseInt(uri.split("/")[2])).isPresent()) {
+                            Epic epicToRemove = taskManager.getEpic(Integer.parseInt(uri.split("/")[2])).get();
+                            taskManager.deleteEpic(Integer.parseInt(uri.split("/")[2]));
+                            sendText(exchange, gson.toJson(epicToRemove));
                         } else {
                             sendCode(exchange, 404);
                         }
@@ -95,7 +107,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 sendCode(exchange, 400);
 
         }
-
-
     }
+
+
 }

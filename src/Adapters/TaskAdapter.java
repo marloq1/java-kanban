@@ -1,4 +1,4 @@
-package adapters;
+package Adapters;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -20,7 +20,6 @@ public class TaskAdapter extends TypeAdapter<Task> {
 
     @Override
     public void write(JsonWriter jsonWriter, Task task) throws IOException {
-
         jsonWriter.beginObject();
         jsonWriter.name("id");
         jsonWriter.value(task.getId());
@@ -30,8 +29,9 @@ public class TaskAdapter extends TypeAdapter<Task> {
         jsonWriter.value(task.getStatus().toString());
         jsonWriter.name("description");
         jsonWriter.value(task.getDescription());
-        if (task instanceof SubTask subTask) {
+        if (task instanceof SubTask) {
             jsonWriter.name("epic");
+            SubTask subTask = (SubTask) task;
             jsonWriter.value(subTask.getEpicId());
         }
         if (task.getStartTime() != null) {
@@ -53,8 +53,8 @@ public class TaskAdapter extends TypeAdapter<Task> {
         Duration duration = null;
         Epic epic = null;
         boolean isSubTask = false;
-        Task task;
-        SubTask subTask;
+        Task task = null;
+        SubTask subTask = null;
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             JsonToken token = jsonReader.peek();

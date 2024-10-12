@@ -1,22 +1,22 @@
-package handlers;
+package Handlers;
 
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.google.gson.*;
 import tracker.model.SubTask;
 import tracker.model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
 import static server.HttpTaskServer.taskManager;
 import static server.HttpTaskServer.gson;
 
-public class TasksHandler extends BaseHttpHandler implements HttpHandler {
+public class SubTasksHandler extends BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-
         String method = exchange.getRequestMethod();
         String uri = exchange.getRequestURI().getPath();
 
@@ -25,12 +25,13 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             case "GET":
 
                 if (uri.split("/").length == 2) {
-                    String tasksJson = gson.toJson(taskManager.getTasks());
-                    sendText(exchange, tasksJson);
+                    String subTasksJson = gson.toJson(taskManager.getSubtasks());
+                    sendText(exchange, subTasksJson);
+
                 } else if (uri.split("/").length == 3) {
                     try {
-                        if (taskManager.getTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
-                            sendText(exchange, gson.toJson(taskManager.getTask(Integer.parseInt(uri.split("/")[2])).get()));
+                        if (taskManager.getSubTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
+                            sendText(exchange, gson.toJson(taskManager.getSubTask(Integer.parseInt(uri.split("/")[2])).get()));
                         } else {
                             sendCode(exchange, 404);
                         }
@@ -47,26 +48,25 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                     String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                     Task task;
                     try {
-                        task = gson.fromJson(body, Task.class);
-                    } catch (JsonSyntaxException e) {
+                        task = gson.fromJson(body, SubTask.class);
+                    } catch (JsonSyntaxException | ClassCastException e) {
                         sendCode(exchange, 400);
                         return;
                     }
-                    if ((task != null) && (!(task instanceof SubTask))) {
-                        if (task.getId() == 0) {
-                            if (taskManager.taskPut(task) == 0) {
+                    if (task instanceof SubTask subTask) {
+                        if (subTask.getId() == 0) {
+                            if (taskManager.subTaskPut(subTask.getEpic(), subTask) == 0) {
                                 sendCode(exchange, 406);
                             } else {
                                 sendCode(exchange, 201);
                             }
                         } else {
-                            boolean wasReplaced = taskManager.taskReplace(task.getId(), task);
+                            boolean wasReplaced = taskManager.subTaskReplace(subTask.getId(), subTask.getEpic(), subTask);
                             if (wasReplaced) {
                                 sendCode(exchange, 201);
                             } else {
                                 sendCode(exchange, 406);
                             }
-
 
                         }
                     } else {
@@ -79,10 +79,10 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             case "DELETE":
                 if (uri.split("/").length == 3) {
                     try {
-                        if (taskManager.getTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
-                            Task taskToRemove = taskManager.getTask(Integer.parseInt(uri.split("/")[2])).get();
-                            taskManager.deleteTask(Integer.parseInt(uri.split("/")[2]));
-                            sendText(exchange, gson.toJson(taskToRemove));
+                        if (taskManager.getSubTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {
+                            SubTask subTaskToRemove = taskManager.getSubTask(Integer.parseInt(uri.split("/")[2])).get();
+                            taskManager.deleteSubtask(Integer.parseInt(uri.split("/")[2]));
+                            sendText(exchange, gson.toJson(subTaskToRemove));
                         } else {
                             sendCode(exchange, 404);
                         }
@@ -95,7 +95,5 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 sendCode(exchange, 400);
 
         }
-
-
     }
 }

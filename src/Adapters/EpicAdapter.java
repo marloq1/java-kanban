@@ -1,4 +1,4 @@
-package adapters;
+package Adapters;
 
 import com.google.gson.TypeAdapter;
 
@@ -10,6 +10,8 @@ import tracker.model.SubTask;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EpicAdapter extends TypeAdapter<Epic> {
 
@@ -66,6 +68,7 @@ public class EpicAdapter extends TypeAdapter<Epic> {
         String name = null;
         String description = null;
         Epic epic = null;
+        List<SubTask> subTasks = new ArrayList<>();
         jsonReader.beginObject();
         while (jsonReader.hasNext()) {
             JsonToken token = jsonReader.peek();
