@@ -82,7 +82,7 @@ class HttpTaskServerTest {
 
         SubTask subTask = new SubTask("Test 2", "Testing task 2",
                 Status.NEW, LocalDateTime.now(), Duration.ofMinutes(5));
-        subTask.setEpic(manager.getEpics().get(0));
+        subTask.setEpicId(manager.getEpics().get(0).getId());
         taskJson = gson.toJson(subTask);
         url = URI.create("http://localhost:8080/subtasks");
         request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(taskJson)).build();
@@ -139,8 +139,7 @@ class HttpTaskServerTest {
         assertEquals(task1.getName(), jsonObject.get("name").getAsString());
         assertEquals(task1.getStatus().toString(), jsonObject.get("status").getAsString());
         assertEquals(task1.getDescription(), jsonObject.get("description").getAsString());
-        assertEquals(task1.getStartTime().format(DateTimeFormatter
-                .ofPattern("HH:mm dd.MM.yyyyг")), jsonObject.get("startTime").getAsString());
+        assertEquals(task1.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME), jsonObject.get("startTime").getAsString());
         assertEquals(task1.getDuration().toMinutes(), jsonObject.get("duration").getAsLong());
         Task task3 = new Task("Задача 3", "Действие", Status.NEW,
                 LocalDateTime.of(2024, 9, 22, 13, 30), Duration.ofHours(1));

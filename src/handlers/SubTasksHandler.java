@@ -1,5 +1,6 @@
 package handlers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,8 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import static server.HttpTaskServer.taskManager;
-import static server.HttpTaskServer.gson;
+import static server.HttpTaskServer.*;
 
 public class SubTasksHandler extends BaseHttpHandler implements HttpHandler {
 
@@ -19,14 +19,19 @@ public class SubTasksHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         String uri = exchange.getRequestURI().getPath();
+        Gson gson = getGson();
 
 
         switch (method) {
             case "GET":
 
                 if (uri.split("/").length == 2) {
-                    String subTasksJson = gson.toJson(taskManager.getSubtasks());
-                    sendText(exchange, subTasksJson);
+                    try {
+                        String subTasksJson = gson.toJson(taskManager.getSubtasks());
+                        sendText(exchange, subTasksJson);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
 
                 } else if (uri.split("/").length == 3) {
                     try {
@@ -55,13 +60,13 @@ public class SubTasksHandler extends BaseHttpHandler implements HttpHandler {
                     }
                     if (task instanceof SubTask subTask) {
                         if (subTask.getId() == 0) {
-                            if (taskManager.subTaskPut(subTask.getEpic(), subTask) == 0) {
+                            if (taskManager.subTaskPut(taskManager.getEpic(subTask.getEpicId()).get(), subTask) == 0) {
                                 sendCode(exchange, 406);
                             } else {
                                 sendCode(exchange, 201);
                             }
                         } else {
-                            boolean wasReplaced = taskManager.subTaskReplace(subTask.getId(), subTask.getEpic(), subTask);
+                            boolean wasReplaced = taskManager.subTaskReplace(subTask.getId(), taskManager.getEpic(subTask.getEpicId()).get(), subTask);
                             if (wasReplaced) {
                                 sendCode(exchange, 201);
                             } else {

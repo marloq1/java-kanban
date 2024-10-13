@@ -9,8 +9,9 @@ import tracker.model.Task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static server.HttpTaskServer.getGson;
 import static server.HttpTaskServer.taskManager;
-import static server.HttpTaskServer.gson;
 
 public class TasksHandler extends BaseHttpHandler implements HttpHandler {
 
@@ -19,14 +20,19 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
 
         String method = exchange.getRequestMethod();
         String uri = exchange.getRequestURI().getPath();
+        Gson gson = getGson();
 
 
         switch (method) {
             case "GET":
 
                 if (uri.split("/").length == 2) {
-                    String tasksJson = gson.toJson(taskManager.getTasks());
-                    sendText(exchange, tasksJson);
+                    try {
+                        String tasksJson = gson.toJson(taskManager.getTasks());
+                        sendText(exchange, tasksJson);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
                 } else if (uri.split("/").length == 3) {
                     try {
                         if (taskManager.getTask(Integer.parseInt(uri.split("/")[2])).isPresent()) {

@@ -1,27 +1,23 @@
 package server;
 
-import adapters.EpicAdapter;
-import adapters.TaskAdapter;
+import adapters.DurationAdapter;
+import adapters.LocalDateTimeAdapter;
 import handlers.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import tracker.controllers.Managers;
 import tracker.controllers.TaskManager;
-import tracker.model.SubTask;
-import tracker.model.Task;
-import tracker.model.Epic;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class HttpTaskServer {
 
     public static TaskManager taskManager;
     public static HttpServer httpServer;
-    public static Gson gson = new GsonBuilder().registerTypeAdapter(Task.class, new TaskAdapter())
-            .registerTypeAdapter(Epic.class, new EpicAdapter())
-            .registerTypeAdapter(SubTask.class, new TaskAdapter()).setPrettyPrinting().create();
 
     public HttpTaskServer(TaskManager manager) {
         taskManager = manager;
@@ -56,7 +52,10 @@ public class HttpTaskServer {
     }
 
     public static Gson getGson() {
-        return gson;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
+        return gsonBuilder.create();
     }
 
 

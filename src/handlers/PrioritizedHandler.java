@@ -1,21 +1,21 @@
 package handlers;
 
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import static server.HttpTaskServer.gson;
 
 
 import java.io.IOException;
 
-import static server.HttpTaskServer.taskManager;
+import static server.HttpTaskServer.*;
 
 public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-
+        Gson gson = getGson();
         String method = exchange.getRequestMethod();
         String uri = exchange.getRequestURI().getPath();
 
