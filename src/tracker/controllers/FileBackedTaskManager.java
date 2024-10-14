@@ -36,9 +36,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void taskReplace(int id, Task task) {
-        super.taskReplace(id, task);
+    public boolean taskReplace(int id, Task task) {
+        boolean b = super.taskReplace(id, task);
         save();
+        return b;
     }
 
     @Override
@@ -48,9 +49,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void subTaskReplace(int id, Epic epic, SubTask subTask) {
-        super.subTaskReplace(id, epic, subTask);
+    public boolean subTaskReplace(int id, Epic epic, SubTask subTask) {
+        boolean b = super.subTaskReplace(id, epic, subTask);
         save();
+        return b;
     }
 
     @Override
@@ -131,7 +133,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         break;
                     case "SUBTASK":
                         SubTask subTask = SubTask.fromString(s);
-                        subTask.setEpic(taskManager.epics.get(Integer.parseInt(parameters[5])));
+                        subTask.setEpicId(taskManager.epics.get(Integer.parseInt(parameters[5])).getId());
                         taskManager.epics.get(Integer.parseInt(parameters[5])).getSubTasksMap().put(Integer.parseInt(parameters[0]), subTask);
                         subTask.setId(Integer.parseInt(parameters[0]));
                         taskManager.subtasks.put(Integer.parseInt(parameters[0]), subTask);
@@ -139,6 +141,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                             taskManager.prioritizedTasks.add(subTask);
                         }
                         break;
+                }
+                if (!parameters[0].equals("id") && taskManager.generatorId < Integer.parseInt(parameters[0])) {
+                    taskManager.generatorId = Integer.parseInt(parameters[0]);
                 }
             }
             for (Epic epic : taskManager.epics.values()) {
